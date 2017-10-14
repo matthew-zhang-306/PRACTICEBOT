@@ -6,14 +6,31 @@ let prefix = 'p!';
 bot.on('message', (message) => {
     
     if (message.content.startsWith(prefix)) {
-        let command = message.content.substr(prefix.length);
+        
+        let input = message.content.substr(prefix.length);
+        let tokens = input.split(" ");
 
+        // get command
+        let command = tokens[0];
+
+        // !HELP
         if (command === 'help') {
             message.channel.send('type "p![a phrase containing "ing"]" and i\'ll return the same phrase containing "ong" instead');
         }
-        else if (command.indexOf('ing') >= 0) {
-            message.channel.send(command.split('ing').join('ong'));
+        // !ING
+        else if (command === 'ing') {
+            message.channel.send(input.substring(command.length).split('ing').join('ong'));
         }
+        // !ROLL
+        else if (command === 'roll') {
+            if (!isNaN(tokens[1])) {
+                let rand = Math.random(0,tokens[1]-1);
+                message.channel.send(`You rolled ${Math.floor(rand*tokens[1])+1}`);
+            } else {
+                message.channel.send("Error: argument must be an integer");
+            }
+        }
+        // !DEFAULT
         else {
             message.channel.send('Use p!help');
         }
