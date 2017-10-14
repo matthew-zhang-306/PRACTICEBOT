@@ -3,6 +3,17 @@ const bot = new Discord.Client();
 
 let prefix = 'p!';
 
+const eightball = ["According to Wikipedia, yes.","So it seems.","Of course! :CheerfulOsha:",
+    "YEAH BOI!","Def1n1tely.","Sure, whatever that means.","Uh, *obviously*.","Was that even a question?",
+    "Yeah. I thought you asked this already.","About as certain as Miyolophone's next chips victory!",
+    "...I didn't get that, what?","Dude, not now... please...","Ask me when I care, you fart.","Hmmmmm :thonk:",
+    "I don't care, dude.","Well, what do *YOU* think the answer is?","Ehhhhhhhh probably not.",
+    "Def1n1tely not.","Doesn't seem like it.","No. I thought you asked this already.","NAH BRUH.",
+    "That wouldn't even make sense.","All the flatearthers say so. So no.","Nononononononono",
+    "Ahhh, sorry. :SadOsha:","You can count on it not being that."];
+
+
+
 bot.on('message', (message) => {
     
     if (message.content.startsWith(prefix)) {
@@ -13,26 +24,36 @@ bot.on('message', (message) => {
         // get command
         let command = tokens[0];
 
-        // !HELP
-        if (command === 'help') {
-            message.channel.send('type "p![a phrase containing "ing"]" and i\'ll return the same phrase containing "ong" instead');
-        }
-        // !ING
-        else if (command === 'ing') {
-            message.channel.send(input.substring(command.length).split('ing').join('ong'));
-        }
-        // !ROLL
-        else if (command === 'roll') {
-            if (!isNaN(tokens[1])) {
-                let rand = Math.random(0,tokens[1]-1);
-                message.channel.send(`You rolled ${Math.floor(rand*tokens[1])+1}`);
-            } else {
-                message.channel.send("Error: argument must be an integer");
-            }
-        }
-        // !DEFAULT
-        else {
-            message.channel.send('Use p!help');
+        switch (command) {
+            // !HELP
+            case 'help':
+                message.channel.send('dm capabilities coming soon');
+                break;
+            // !ING
+            case 'ing':
+                message.channel.send(input.substring(command.length).split('ing').join('ong'));
+                break;
+            // !ROLL
+            case 'roll':
+                if (!isNaN(tokens[1])) {
+                    let rand = Math.random();
+                    message.channel.send(`You rolled ${Math.floor(rand*tokens[1])+1}`);
+                } else {
+                    message.channel.send("Error: argument must be an integer");
+                }
+                break;
+            // !FLIP
+            case 'flip':
+                message.channel.send(Math.random() >= 0.5 ? 'Heads!' : 'Tails!');
+                break;
+            // !8BALL
+            case '8ball':
+                let rand = Math.floor(Math.random() * eightball.length);
+                message.channel.send(eightball[rand]);
+                break;
+            // !DEFAULT
+            default:
+                message.channel.send('Error: unknown command.');
         }
     }
 
